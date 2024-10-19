@@ -1,37 +1,48 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
+import { Tabs } from "expo-router";
+import { Ionicons } from "@expo/vector-icons"
 
-import { TabBarIcon } from '@/components/navigation/TabBarIcon';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
-
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
+// Main entry point for the tabs for the application.
+export default function TabsLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-      }}>
+        tabBarActiveTintColor: "#ffd33d",
+        headerStyle: {
+          backgroundColor: "#25292e",
+        },
+        headerShadowVisible: false,
+        headerTintColor: "#fff",
+        tabBarStyle: {
+          backgroundColor: "#25292e",
+        },
+    }}>
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
-          ),
+          headerTitle: "My Lists",
+          title: "My lists",
+          tabBarIcon: ({ focused, color }) =>
+            <Ionicons
+              name={focused ? "list" : "list-outline"}
+              color={color}
+              size={24}
+            />
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="newList"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
-          ),
+          headerTitle: "New List",
+          title: "New List",
+          tabBarIcon: ({ focused, color }) =>
+            <Ionicons
+              name={focused ? "add" : "add-outline"}
+              color={color}
+              size={24}
+            />
         }}
       />
     </Tabs>
   );
 }
+
