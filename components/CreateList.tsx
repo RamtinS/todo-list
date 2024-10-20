@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
-import {FlatList, View, StyleSheet, Text, TextInput, TouchableOpacity, Button} from "react-native";
+import {FlatList, View, StyleSheet, Text, TextInput, TouchableOpacity, Pressable} from "react-native";
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 
 export default function CreateList() {
   const [tasks, setTasks] = useState<string[]>([]);
   const [newTask, setNewTask] = useState('');
+  const [title, setTitle] = useState('');
 
   /**
    * Function to handle adding a new task.
@@ -46,10 +47,14 @@ export default function CreateList() {
     <View style={styles.container}>
 
       <TextInput
-        style={styles.titleInput}
+        style={[
+          styles.titleInput, {backgroundColor: title.trim() ? '#ADD8E6' : "#fff"}
+        ]}
         placeholder={'Title'}
         clearButtonMode={"always"}
         autoCorrect={false}
+        value={title}
+        onChangeText={setTitle}
       />
 
       <Text style={styles.descriptionText}> Tasks added: </Text>
@@ -77,7 +82,15 @@ export default function CreateList() {
         </TouchableOpacity>
       </View>
 
-
+      <Pressable
+        style={({ pressed }) => [
+          styles.saveButton, {backgroundColor: pressed ? '#388E3C' : (title.trim() ? '#4CAF50' : '#A9A9A9')}
+        ]}
+        onPress={handleNewTask}
+        disabled={!title.trim()}
+      >
+        <Text style={styles.saveButtonText}>Save List</Text>
+      </Pressable>
 
     </View>
   );
@@ -109,6 +122,7 @@ const styles = StyleSheet.create({
   addTaskContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginTop: 10
   },
   taskInput: {
     flex: 1,
@@ -135,6 +149,16 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   taskText: {
+    fontSize: 16,
+  },
+  saveButton: {
+    padding: 10,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  saveButtonText: {
+    color: '#fff',
     fontSize: 16,
   },
 })
