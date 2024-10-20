@@ -3,16 +3,16 @@ import {View, Text, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
 import SearchBar from './SearchBar';
 import {TodoList} from "@/models/TodoList";
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+import {router} from "expo-router";
 
 export default function Homepage() {
 
   const [todoLists, setTodoLists] = useState<TodoList[]>([
-    new TodoList('Shopping List'),
-    new TodoList('Chores'),
-    new TodoList('Work Tasks'),
-    new TodoList('Fitness Goals'),
-    new TodoList('Reading List'),
-    new TodoList('Reading List'),
+    { title: 'Chores', completedItems: [], nonCompletedItems: [] },
+    { title: 'Work Task', completedItems: [], nonCompletedItems: [] },
+    { title: 'Fitness Goals', completedItems: [], nonCompletedItems: [] },
+    { title: 'Reading List', completedItems: [], nonCompletedItems: [] },
+    { title: 'Reading List', completedItems: [], nonCompletedItems: [] },
   ]);
 
   const [searchText, setSearchText] = useState('');
@@ -27,9 +27,16 @@ export default function Homepage() {
 
   const renderItem = ({ item, index }: { item: TodoList, index: number }) => (
     <View style={styles.itemContainer}>
-      <Text style={styles.itemText}>{item.title}</Text>
+
+      <TouchableOpacity
+        onPress={() => router.push({ pathname: '/todoListDetail', params: { todoList: JSON.stringify(item) } })}
+        style={styles.itemTextContainer}
+      >
+        <Text style={styles.itemText}>{item.title}</Text>
+      </TouchableOpacity>
+
       <TouchableOpacity onPress={() => {deleteTodoList(index)}}>
-        <FontAwesome6 name="trash-can" size={24} color="black" />
+        <FontAwesome6 name="trash-can" size={24} color="black" style={styles.trashCan} />
       </TouchableOpacity>
     </View>
   );
@@ -63,14 +70,22 @@ const styles = StyleSheet.create({
   itemContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: 16,
+    padding: 5,
     borderWidth: 1,
     marginBottom: 10,
     borderColor: '#090909',
     backgroundColor: '#fff',
     borderRadius: 10,
   },
+  itemTextContainer: {
+    flex: 1,
+  },
   itemText: {
     fontSize: 20,
+    padding: 8,
   },
+  trashCan: {
+    marginLeft: 5,
+    padding: 8,
+  }
 });
