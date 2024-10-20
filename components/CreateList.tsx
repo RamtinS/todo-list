@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import {FlatList, View, StyleSheet, Text, TextInput, TouchableOpacity, Pressable} from "react-native";
-import FontAwesome from '@expo/vector-icons/FontAwesome';
+import {FlatList, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+import TaskInput from "@/components/TaskInput";
 
 export default function CreateList() {
   const [tasks, setTasks] = useState<string[]>([]);
@@ -16,13 +16,6 @@ export default function CreateList() {
       setTasks(prevTasks => [...prevTasks, newTask]);
       setNewTask('');
     }
-  };
-
-  /**
-   * Function to handle keyboard input.
-   */
-  const handleKeyInput = () => {
-    handleNewTask();
   };
 
   /**
@@ -65,22 +58,11 @@ export default function CreateList() {
         keyExtractor={(_item, index) => index.toString()}
       />
 
-      <View style={styles.addTaskContainer}>
-        <TextInput
-          style={styles.taskInput}
-          placeholder={'Add new task'}
-          clearButtonMode={"always"}
-          autoCorrect={false}
-          value={newTask}
-          onChangeText={setNewTask}
-          onSubmitEditing={handleKeyInput}
-          returnKeyType="done"
-        />
-
-        <TouchableOpacity onPress={() => {handleNewTask()}}>
-          <FontAwesome name="check" size={24} color="black" />
-        </TouchableOpacity>
-      </View>
+      <TaskInput
+        newTask={newTask}
+        setNewTask={setNewTask}
+        handleNewTask={handleNewTask}
+      />
 
       <Pressable
         style={({ pressed }) => [
@@ -118,22 +100,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: '#fff',
     fontSize: 18
-  },
-  addTaskContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 10
-  },
-  taskInput: {
-    flex: 1,
-    paddingHorizontal: 10,
-    paddingVertical: 10,
-    borderWidth: 1,
-    borderColor: "#090909",
-    borderRadius: 10,
-    backgroundColor: '#fff',
-    fontSize: 18,
-    marginRight: 10,
   },
   taskContainer: {
     flexDirection: 'row',
