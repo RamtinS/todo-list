@@ -1,10 +1,10 @@
-import { Text, View, StyleSheet } from "react-native";
-import Homepage from "@/components/Homepage";
+import { View, StyleSheet } from "react-native";
+import ListManager from "@/components/ListManager";
 
 export default function Index() {
   return (
     <View style={styles.container}>
-      <Homepage />
+      <ListManager />
     </View>
   );
 }

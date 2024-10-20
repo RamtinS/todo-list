@@ -5,7 +5,7 @@ import {TodoList} from "@/models/TodoList";
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import {router} from "expo-router";
 
-export default function Homepage() {
+export default function ListManager() {
 
   const [todoLists, setTodoLists] = useState<TodoList[]>([
     { title: 'Chores', completedItems: [], nonCompletedItems: [] },
