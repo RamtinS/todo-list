@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
-import {SearchBarProps} from "@/models/Type";
+import {SearchBarProps} from "@/models/Props";
 
 export default function SearchBar({ onSearch }: SearchBarProps) {
   const [searchText, setSearchText] = useState('');
