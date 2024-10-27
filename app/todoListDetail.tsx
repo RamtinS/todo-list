@@ -2,11 +2,12 @@ import React, {useEffect} from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 import {useLocalSearchParams, useNavigation,} from 'expo-router';
 import {TodoList} from "@/models/TodoList";
+import ListDetail from "@/components/ListDetail";
 
 export default function TodoListDetailScreen() {
-  const { todoList } = useLocalSearchParams();
   const navigation = useNavigation();
 
+  const { todoList } = useLocalSearchParams();
   const parsedTodoList: TodoList | null = todoList ? JSON.parse(todoList as string) : null;
 
   useEffect(() => {
@@ -17,9 +18,11 @@ export default function TodoListDetailScreen() {
 
   return (
     <View style={styles.container}>
-
-
-
+      { parsedTodoList ? (
+        <ListDetail todoList={parsedTodoList} />
+      ) : (
+        <Text style={styles.errorText}>Error: List not found.</Text>
+      )}
     </View>
   );
 }
@@ -30,11 +33,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff',
-    padding: 20,
   },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
+  errorText: {
+    fontSize: 18,
+    color: '#FF0000',
+    textAlign: 'center',
   },
 });
