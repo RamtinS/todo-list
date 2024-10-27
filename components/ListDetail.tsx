@@ -4,6 +4,7 @@ import {ListDetailProps} from "@/models/Props";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import Checkbox from 'expo-checkbox';
 import TaskInput from "@/components/TaskInput";
+import {saveExistingTodoList} from "@/utils/FileManager";
 
 export default function ListDetail({ todoList }: ListDetailProps) {
   const [completed, setCompleted] = useState<string[]>([]);
@@ -16,6 +17,24 @@ export default function ListDetail({ todoList }: ListDetailProps) {
       setNonCompleted(todoList.nonCompletedTasks);
     }
   }, [todoList]);
+
+  useEffect(() => {
+    saveCurrentTodoList().then();
+  }, [completed, nonCompleted]);
+
+  const saveCurrentTodoList = async () => {
+    if (todoList) {
+
+      const updatedTodoList = {
+        id: todoList.id,
+        title: todoList.title,
+        completedTasks: completed,
+        nonCompletedTasks: nonCompleted,
+      };
+
+     await saveExistingTodoList(updatedTodoList)
+    }
+  }
 
   const handleCheckboxChange = (index: number, isChecked: boolean) => {
     if (isChecked) {
@@ -99,8 +118,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   descriptionText: {
-    paddingTop: 16,
-    paddingBottom: 16,
+    paddingTop: 10,
+    paddingBottom: 10,
     color: "#090909",
     fontSize: 18
   },

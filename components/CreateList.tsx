@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {FlatList, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import TaskInput from "@/components/TaskInput";
+import {saveNewTodoList} from "@/utils/FileManager";
 
 export default function CreateList() {
   const [tasks, setTasks] = useState<string[]>([]);
@@ -26,6 +27,18 @@ export default function CreateList() {
   const deleteTask = (index: number) => {
     setTasks(tasks => tasks.filter((_, i) => i !== index));
   };
+
+  /**
+   * Function to save a new list.
+   */
+  const handleSaveNewList = async () => {
+    if (!title.trim()) {
+      return;
+    }
+    await saveNewTodoList(title.trim(), [], tasks)
+    setTitle('');
+    setTasks([]);
+  }
 
   const renderItem = ({ item, index }: { item: string, index: number}) => (
     <View style={styles.taskContainer}>
@@ -68,7 +81,7 @@ export default function CreateList() {
         style={({ pressed }) => [
           styles.saveButton, {backgroundColor: pressed ? '#388E3C' : (title.trim() ? '#4CAF50' : '#A9A9A9')}
         ]}
-        onPress={handleNewTask}
+        onPress={handleSaveNewList}
         disabled={!title.trim()}
       >
         <Text style={styles.saveButtonText}>Save List</Text>
