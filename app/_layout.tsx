@@ -1,22 +1,32 @@
 import {Stack} from "expo-router";
-import {StatusBar} from "react-native";
-import {initializeDirectoryAndIndex, initializeTestData} from "@/utils/FileManager";
-import {useEffect} from "react";
+import {StatusBar, ActivityIndicator, View, StyleSheet} from "react-native";
+import {initializeDirectoryAndIndex} from "@/utils/FileManager";
+import {useEffect, useState} from "react";
 
 // Main entry point for the application.
 export default function RootLayout() {
+  const [isInitialized, setIsInitialized] = useState(false);
 
   // Create file directory and test data when starting app.
   useEffect((): void => {
-    initializeDirectoryAndIndex().catch((error) => {
-      console.error("Failed to create data directory:", error);
+    initializeAppResources().then((): void => {
+      setIsInitialized(true);
+    }).catch((error) => {
+      console.error("Error initializing the app:", error);
     });
-
-    initializeTestData(true).catch((error) => {
-      console.error("Failed to create test data:", error);
-    });
-
   }, []);
+
+  const initializeAppResources: () => Promise<void> = async (): Promise<void> => {
+    await initializeDirectoryAndIndex();
+  };
+
+  if (!isInitialized) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
 
   return (
     <>
@@ -33,4 +43,12 @@ export default function RootLayout() {
     </>
   );
 }
+
+const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
 
