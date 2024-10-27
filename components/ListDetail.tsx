@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {SectionList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {ListDetailProps} from "@/models/Props";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import Checkbox from 'expo-checkbox';
@@ -11,14 +11,14 @@ export default function ListDetail({ todoList }: ListDetailProps) {
   const [nonCompleted, setNonCompleted] = useState<string[]>([]);
   const [newTask, setNewTask] = useState('');
 
-  useEffect(() => {
+  useEffect((): void => {
     if (todoList) {
       setCompleted(todoList.completedTasks);
       setNonCompleted(todoList.nonCompletedTasks);
     }
   }, [todoList]);
 
-  useEffect(() => {
+  useEffect((): void => {
     saveCurrentTodoList().then();
   }, [completed, nonCompleted]);
 
@@ -36,15 +36,17 @@ export default function ListDetail({ todoList }: ListDetailProps) {
     }
   }
 
-  const handleCheckboxChange = (index: number, isChecked: boolean) => {
-    if (isChecked) {
-      const task = nonCompleted[index];
-      setNonCompleted(prevNonCompleted => prevNonCompleted.filter((_, i) => i !== index));
-      setCompleted(prevCompleted => [...prevCompleted, task]);
-    } else {
+  const handleCheckboxChange = (index: number, isCompleted: boolean) => {
+    if (isCompleted) {
+      // Move from completed to non-completed.
       const task = completed[index];
       setCompleted(prevCompleted => prevCompleted.filter((_, i) => i !== index));
       setNonCompleted(prevNonCompleted => [...prevNonCompleted, task]);
+    } else {
+      // Move from non-completed to completed.
+      const task = nonCompleted[index];
+      setNonCompleted(prevNonCompleted => prevNonCompleted.filter((_, i) => i !== index));
+      setCompleted(prevCompleted => [...prevCompleted, task]);
     }
   }
 
@@ -63,38 +65,41 @@ export default function ListDetail({ todoList }: ListDetailProps) {
     }
   };
 
-  const renderItem = ({ item, index, isCompleted }: { item: string, index: number, isCompleted: boolean }) => (
-    <View style={styles.taskContainer}>
-      <Checkbox  value={isCompleted} onValueChange={() => handleCheckboxChange(index, !isCompleted)} />
-      <Text style={styles.taskText}>{item}</Text>
-      <TouchableOpacity onPress={() => {deleteTask(index, isCompleted)}}>
-        <FontAwesome6 name="trash-can" size={24} color="black" />
-      </TouchableOpacity>
-    </View>
-  );
+  const renderItem = ({ item, index, section }: { item: string, index: number, section: { title: string } }) => {
+    const isInCompletedList = (section.title === 'Completed Tasks');
+    return(
+      <View style={styles.taskContainer}>
+
+        <Checkbox
+          value={isInCompletedList}
+          onValueChange={() => handleCheckboxChange(index, isInCompletedList)} />
+
+        <Text style={styles.taskText}>{item}</Text>
+
+        <TouchableOpacity onPress={() => {deleteTask(index, isInCompletedList)}}>
+          <FontAwesome6 name="trash-can" size={24} color="black" />
+        </TouchableOpacity>
+
+      </View>
+    );
+  };
+
+  const sections = [
+    { title: 'Non-Completed Tasks', data: nonCompleted },
+    { title: 'Completed Tasks', data: completed }
+  ];
 
   return (
     <View style={styles.container}>
 
-      <View style={styles.listContainer}>
-        <Text style={styles.descriptionText}>Non-Completed Tasks:</Text>
-        <FlatList
-          data={nonCompleted}
-          renderItem={({ item, index }) => renderItem({ item, index, isCompleted: false })}
-          keyExtractor={(_item, index) => `nonCompleted-${index}`}
-          style={styles.flatList}
-        />
-      </View>
-
-      <View style={styles.listContainer}>
-        <Text style={styles.descriptionText}>Completed Tasks:</Text>
-        <FlatList
-          data={completed}
-          renderItem={({ item, index }) => renderItem({ item, index, isCompleted: true })}
-          keyExtractor={(_item, index) => `completed-${index}`}
-          style={styles.flatList}
-        />
-      </View>
+      <SectionList
+        sections={sections}
+        keyExtractor={(item, index) => item + index}
+        renderItem={renderItem}
+        renderSectionHeader={({ section: { title } }) => (
+          <Text style={styles.descriptionText}>{title}</Text>
+        )}
+      />
 
       <TaskInput
         newTask={newTask}
@@ -113,19 +118,11 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     padding: 20,
   },
-  listContainer: {
-    flex: 1,
-    marginBottom: 10,
-  },
   descriptionText: {
     paddingTop: 10,
     paddingBottom: 10,
     color: "#090909",
     fontSize: 18
-  },
-  flatList: {
-    flexGrow: 0,
-    height: '100%',
   },
   taskContainer: {
     flexDirection: 'row',
@@ -142,10 +139,5 @@ const styles = StyleSheet.create({
   },
   taskText: {
     fontSize: 16,
-  },
-  taskInput: {
-    position: 'absolute',
-    bottom: 20,
-    width: '100%',
   },
 })
