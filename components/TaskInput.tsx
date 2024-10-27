@@ -1,9 +1,18 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {TaskInputProps} from "@/models/Props";
 import { View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 export default function TaskInput( { newTask, setNewTask, handleNewTask } : TaskInputProps) {
+  const inputRef = useRef<TextInput>(null);
+
+  const addTaskAndRefocus: () => void = (): void => {
+    handleNewTask();
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  };
+
   return (
     <View style={styles.addTaskContainer}>
       <TextInput
@@ -13,8 +22,9 @@ export default function TaskInput( { newTask, setNewTask, handleNewTask } : Task
         autoCorrect={false}
         value={newTask}
         onChangeText={setNewTask}
-        onSubmitEditing={handleNewTask}
+        onSubmitEditing={addTaskAndRefocus}
         returnKeyType="done"
+        blurOnSubmit={false}
       />
 
       <TouchableOpacity onPress={() => {handleNewTask()}}>
