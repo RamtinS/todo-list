@@ -16,6 +16,7 @@ export default function TaskInput( { newTask, setNewTask, handleNewTask } : Task
   return (
     <View style={styles.addTaskContainer}>
       <TextInput
+        ref={inputRef}
         style={styles.taskInput}
         placeholder={'Add new task'}
         clearButtonMode={"always"}
