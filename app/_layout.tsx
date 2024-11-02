@@ -1,6 +1,6 @@
 import {Stack} from "expo-router";
 import {ActivityIndicator, StatusBar, StyleSheet, View} from "react-native";
-import {initializeDirectory, initializeIndexFile} from "@/utils/FileManager";
+import {initializeDirectory, initializeIndexFile, initializeTestData} from "@/utils/FileManager";
 import {useEffect, useState} from "react";
 
 // Main entry point for the application.
@@ -19,6 +19,7 @@ export default function RootLayout() {
   const initializeAppResources: () => Promise<void> = async (): Promise<void> => {
     await initializeDirectory();
     await initializeIndexFile();
+    await initializeTestData(true)
   };
 
   if (!isInitialized) {
