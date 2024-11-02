@@ -5,9 +5,9 @@ import CreateList from "@/components/CreateList";
  * Tab for creating a new list.
  * It uses the CreateList component to provide a user interface for creating a new list.
  *
- * @constructor
+ * @constructorx
  */
-export default function NewListTab() {
+export default function NewListScreen() {
   return(
     <SafeAreaView style={styles.safeAreaContainer}>
       <KeyboardAvoidingView
