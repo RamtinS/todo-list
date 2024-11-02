@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     paddingHorizontal: 10,
-    paddingVertical: 5,
+    paddingVertical: 8,
     borderWidth: 1,
     borderColor: "#090909",
     borderRadius: 10,
