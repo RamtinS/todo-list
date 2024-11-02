@@ -103,6 +103,7 @@ export default function ListDetail({ todoList }: ListDetailProps) {
    *
    * @param item The item to render.
    * @param index The index of the item.
+   * @param section The section the item belongs to.
    */
   const renderItem = ({ item, index, section }: { item: string, index: number, section: { title: string } }) => {
     const isInCompletedList = (section.title === 'Completed Tasks');
