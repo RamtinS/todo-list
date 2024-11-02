@@ -22,7 +22,7 @@ export default function ListManager() {
    */
   useEffect(() => {
     fetchTodoLists().then();
-  }, []);
+  });
 
   /**
    * Function to fetch lists from storage and set the state.
