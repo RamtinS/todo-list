@@ -1,11 +1,11 @@
-import { View, StyleSheet } from "react-native";
+import {SafeAreaView, StyleSheet} from "react-native";
 import ListManager from "@/components/ListManager";
 
 export default function Index() {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <ListManager />
-    </View>
+    </SafeAreaView>
   );
 }
 

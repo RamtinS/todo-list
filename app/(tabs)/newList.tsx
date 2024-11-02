@@ -1,11 +1,11 @@
-import {View, StyleSheet, Text} from "react-native";
+import {SafeAreaView, StyleSheet} from "react-native";
 import CreateList from "@/components/CreateList";
 
 export default function NewListScreen() {
   return(
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <CreateList/>
-    </View>
+    </SafeAreaView>
   );
 }
 
