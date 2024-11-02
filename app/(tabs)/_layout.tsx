@@ -1,7 +1,11 @@
 import { Tabs } from "expo-router";
 import { Ionicons } from "@expo/vector-icons"
 
-// Main entry point for the tabs for the application.
+/**
+ * Main entry point for the tabs of the application.
+ *
+ * @constructor
+ */
 export default function TabsLayout() {
   return (
     <Tabs

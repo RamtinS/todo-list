@@ -3,9 +3,20 @@ import {TaskInputProps} from "@/models/Props";
 import { View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
+/**
+ * TaskInput component allows users to input a new task and submit it.
+ *
+ * @param newTask - The properties for the TaskInput component.
+ * @param setNewTask - Function to update the new task state.
+ * @param handleNewTask - Function to handle the addition of the new task.
+ * @constructor
+ */
 export default function TaskInput( { newTask, setNewTask, handleNewTask } : TaskInputProps) {
   const inputRef = useRef<TextInput>(null);
 
+  /**
+   * Adds a new task and refocuses the input field.
+   */
   const addTaskAndRefocus: () => void = (): void => {
     handleNewTask();
     if (inputRef.current) {

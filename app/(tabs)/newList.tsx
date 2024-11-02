@@ -1,7 +1,13 @@
 import {SafeAreaView, KeyboardAvoidingView, StyleSheet, Platform} from "react-native";
 import CreateList from "@/components/CreateList";
 
-export default function NewListScreen() {
+/**
+ * Tab for creating a new list.
+ * It uses the CreateList component to provide a user interface for creating a new list.
+ *
+ * @constructor
+ */
+export default function NewListTab() {
   return(
     <SafeAreaView style={styles.safeAreaContainer}>
       <KeyboardAvoidingView

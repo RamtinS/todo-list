@@ -6,24 +6,44 @@ import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import {router} from "expo-router";
 import {deleteTodoList, loadTodoList, loadTodoListMeta} from "@/utils/FileManager";
 
+/**
+ * ListManager component displays a list of lists with search functionality.
+ * Users can view, delete, and navigate to the detail view of each list.
+ *
+ * @constructor
+ */
 export default function ListManager() {
 
   const [todoLists, setTodoLists] = useState<TodoListMeta[]>([]);
   const [searchText, setSearchText] = useState('');
 
+  /**
+   * Fetches the lists when the component is mounted.
+   */
   useEffect(() => {
     fetchTodoLists().then();
-  })
+  }, []);
 
+  /**
+   * Function to fetch lists from storage and set the state.
+   */
   const fetchTodoLists = async () => {
     const lists: TodoListMeta[] = await loadTodoListMeta();
     setTodoLists(lists);
   };
 
+  /**
+   * Function to filter lists based on the search text.
+   */
   const filteredTodoLists = todoLists.filter((todoListMeta) =>
     todoListMeta.title.toLowerCase().includes(searchText.toLowerCase())
   );
 
+  /**
+   * Handles the deletion of a list.
+   *
+   * @param {number} id - The ID of the list to delete.
+   */
   const handleDeleteTodoList = async (id: number) => {
     const deleted: boolean = await deleteTodoList(id)
     if (deleted) {
@@ -31,6 +51,12 @@ export default function ListManager() {
     }
   };
 
+  /**
+   * Handles the press event for a list item.
+   * It navigates to the detailed view of the selected list.
+   *
+   * @param {number} id - The ID of the list to load.
+   */
   const handleTodoListPress = async (id: number) => {
     const todoList: TodoList | null = await loadTodoList(id);
     if (todoList) {
@@ -40,6 +66,11 @@ export default function ListManager() {
     }
   };
 
+  /**
+   * Function to render individual list items.
+   *
+   * @param item The item to render.
+   */
   const renderItem = ({ item }: { item: TodoListMeta }) => (
     <View style={styles.itemContainer}>
 

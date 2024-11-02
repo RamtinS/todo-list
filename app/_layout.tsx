@@ -3,11 +3,17 @@ import {ActivityIndicator, StatusBar, StyleSheet, View} from "react-native";
 import {initializeDirectory, initializeIndexFile, initializeTestData} from "@/utils/FileManager";
 import {useEffect, useState} from "react";
 
-// Main entry point for the application.
+/**
+ * Main entry point for the application.
+ *
+ * @constructor
+ */
 export default function RootLayout() {
   const [isInitialized, setIsInitialized] = useState(false);
 
-  // Create file directory and test data when starting app.
+  /**
+   * Initialize file directory, index file, and test data when the app starts.
+   */
   useEffect((): void => {
     initializeAppResources().then((): void => {
       setIsInitialized(true);

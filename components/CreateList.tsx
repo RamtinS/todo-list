@@ -4,13 +4,18 @@ import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import TaskInput from "@/components/TaskInput";
 import {saveNewTodoList} from "@/utils/FileManager";
 
+/**
+ * CreateList component allows users to create a new list.
+ *
+ * @constructor
+ */
 export default function CreateList() {
   const [tasks, setTasks] = useState<string[]>([]);
   const [newTask, setNewTask] = useState('');
   const [title, setTitle] = useState('');
 
   /**
-   * Function to handle adding a new task.
+   * Function to handle adding a new task to the list.
    */
   const handleNewTask = () => {
     if (newTask.trim()) {
@@ -20,7 +25,7 @@ export default function CreateList() {
   };
 
   /**
-   * Function to delete a task.
+   * Function to delete a task from the list.
    *
    * @param index The index of the task to be deleted.
    */
@@ -29,7 +34,7 @@ export default function CreateList() {
   };
 
   /**
-   * Function to save a new list.
+   * Function to save the newly created list.
    */
   const handleSaveNewList = async () => {
     if (!title.trim()) {
@@ -40,6 +45,12 @@ export default function CreateList() {
     setTasks([]);
   }
 
+  /**
+   * Function to render individual list items.
+   *
+   * @param item The item to render.
+   * @param index The index of the item.
+   */
   const renderItem = ({ item, index }: { item: string, index: number}) => (
     <View style={styles.taskContainer}>
       <Text style={styles.taskText}>{item}</Text>

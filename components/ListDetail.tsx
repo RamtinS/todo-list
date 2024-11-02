@@ -6,11 +6,21 @@ import Checkbox from 'expo-checkbox';
 import TaskInput from "@/components/TaskInput";
 import {saveExistingTodoList} from "@/utils/FileManager";
 
+/**
+ * ListDetail component displays and manages tasks within a list.
+ * It allows users to add and delete tasks, and change the status of the tasks.
+ *
+ * @param todoList - Prop containing the list object.
+ * @constructor
+ */
 export default function ListDetail({ todoList }: ListDetailProps) {
   const [completed, setCompleted] = useState<string[]>([]);
   const [nonCompleted, setNonCompleted] = useState<string[]>([]);
   const [newTask, setNewTask] = useState('');
 
+  /**
+   * Loads tasks from the provided list when the component mounts.
+   */
   useEffect((): void => {
     if (todoList) {
       setCompleted(todoList.completedTasks);
@@ -18,11 +28,18 @@ export default function ListDetail({ todoList }: ListDetailProps) {
     }
   }, [todoList]);
 
+  /**
+   * Saves the current state of the list to file storage whenever the completed
+   * or non-completed task lists change.
+   */
   useEffect((): void => {
     saveCurrentTodoList().then();
   }, [completed, nonCompleted]);
 
-  const saveCurrentTodoList = async () => {
+  /**
+   * Saves the current list.
+   */
+  const saveCurrentTodoList: () => Promise<void> = async (): Promise<void> => {
     if (todoList) {
 
       const updatedTodoList = {
@@ -36,6 +53,12 @@ export default function ListDetail({ todoList }: ListDetailProps) {
     }
   }
 
+  /**
+   * Moves a task between the completed and non-completed lists.
+   *
+   * @param {number} index - The index of the task in the list.
+   * @param {boolean} isCompleted - Indicates if the task is in the completed list.
+   */
   const handleCheckboxChange = (index: number, isCompleted: boolean) => {
     if (isCompleted) {
       // Move from completed to non-completed.
@@ -50,6 +73,10 @@ export default function ListDetail({ todoList }: ListDetailProps) {
     }
   }
 
+  /**
+   * Adds a new task to the non-completed task list.
+   * Clears the input after adding the task.
+   */
   const handleNewTask = () => {
     if (newTask.trim()) {
       setNonCompleted(prevNonCompleted => [...prevNonCompleted, newTask]);
@@ -57,6 +84,12 @@ export default function ListDetail({ todoList }: ListDetailProps) {
     }
   };
 
+  /**
+   * Deletes a task from either the completed or non-completed list based on its state.
+   *
+   * @param {number} index - The index of the task to delete.
+   * @param {boolean} isCompleted - Indicates if the task is in the completed list.
+   */
   const deleteTask = (index: number, isCompleted: boolean) => {
     if (isCompleted) {
       setCompleted(prevCompleted => prevCompleted.filter((_, i) => i !== index));
@@ -65,6 +98,12 @@ export default function ListDetail({ todoList }: ListDetailProps) {
     }
   };
 
+  /**
+   * Function to render individual list items.
+   *
+   * @param item The item to render.
+   * @param index The index of the item.
+   */
   const renderItem = ({ item, index, section }: { item: string, index: number, section: { title: string } }) => {
     const isInCompletedList = (section.title === 'Completed Tasks');
     return(

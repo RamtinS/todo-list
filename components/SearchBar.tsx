@@ -2,9 +2,20 @@ import React, {useState} from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
 import {SearchBarProps} from "@/models/Props";
 
+/**
+ * SearchBar component provides an input field for users to enter search queries.
+ *
+ * @param onSearch - Callback function in a prop to handle search text changes.
+ * @constructor
+ */
 export default function SearchBar({ onSearch }: SearchBarProps) {
   const [searchText, setSearchText] = useState('');
 
+  /**
+   * Handles changes in the search text input.
+   *
+   * @param {string} text - The current text from the input field.
+   */
   const handleSearch = (text: string) => {
     setSearchText(text);
     onSearch(text);

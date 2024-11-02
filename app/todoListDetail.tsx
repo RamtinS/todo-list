@@ -4,12 +4,21 @@ import {useLocalSearchParams, useNavigation,} from 'expo-router';
 import {TodoList} from "@/models/TodoList";
 import ListDetail from "@/components/ListDetail";
 
+/**
+ * Screen for displaying and managing details of a list.
+ * It uses the ListDetail component to display the tasks.
+ *
+ * @constructor
+ */
 export default function TodoListDetailScreen() {
   const navigation = useNavigation();
 
   const { todoList } = useLocalSearchParams();
   const parsedTodoList: TodoList | null = todoList ? JSON.parse(todoList as string) : null;
 
+  /**
+   * Sets the title of the screen to the title of the list when the screen is mounted.
+   */
   useEffect(() => {
     if (parsedTodoList) {
       navigation.setOptions({ title: parsedTodoList.title });
