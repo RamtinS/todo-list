@@ -1,19 +1,43 @@
 import * as FileSystem from 'expo-file-system';
 import {TodoList, TodoListMeta} from "@/models/TodoList";
+import {FileInfo} from "expo-file-system";
 
 const DATA_DIRECTORY = `${FileSystem.documentDirectory}todoLists/`;
 const INDEX_FILE = `${DATA_DIRECTORY}index.json`;
 
-export const initializeDirectoryAndIndex: () => Promise<void> = async (): Promise<void> => {
-  const directoryInfo = await FileSystem.getInfoAsync(DATA_DIRECTORY);
-  const fileInfo = await FileSystem.getInfoAsync(INDEX_FILE);
-
-  if (!directoryInfo.exists) {
-    await FileSystem.makeDirectoryAsync(DATA_DIRECTORY, { intermediates: true });
+/**
+ * Function to initialize the data directory.
+ */
+export const initializeDirectory: () => Promise<void> = async (): Promise<void> => {
+  try {
+    const directoryInfo = await FileSystem.getInfoAsync(DATA_DIRECTORY);
+    if (!directoryInfo.exists) {
+      await FileSystem.makeDirectoryAsync(DATA_DIRECTORY, { intermediates: true });
+      console.log('Data directory created successfully');
+    } else {
+      console.log('Data directory already exists');
+    }
+  } catch (error) {
+    console.error('Failed to initialize the directory:', error);
+    throw error;
   }
+};
 
-  if (!fileInfo.exists) {
-    await FileSystem.writeAsStringAsync(INDEX_FILE, JSON.stringify([]));
+/**
+ * Function to initialize the index file.
+ */
+export const initializeIndexFile: () => Promise<void> = async (): Promise<void> => {
+  try {
+    const fileInfo: FileInfo = await FileSystem.getInfoAsync(INDEX_FILE);
+    if (!fileInfo.exists) {
+      await FileSystem.writeAsStringAsync(INDEX_FILE, JSON.stringify([]));
+      console.log('Index file created successfully');
+    } else {
+      console.log('Index file already exists');
+    }
+  } catch (error) {
+    console.error('Failed to initialize the index file:', error);
+    throw error;
   }
 };
 
@@ -46,9 +70,9 @@ export const saveNewTodoList: (title: string, completed: string[],  nonCompleted
     }
   };
 
-export const loadTodoListMeta = async (): Promise<TodoListMeta[]> => {
+export const loadTodoListMeta: () => Promise<TodoListMeta[]> = async (): Promise<TodoListMeta[]> => {
   try {
-    const content = await FileSystem.readAsStringAsync(INDEX_FILE);
+    const content: string = await FileSystem.readAsStringAsync(INDEX_FILE);
     return JSON.parse(content) as TodoListMeta[];
   } catch (error) {
     console.error('Could not read index file:', error);
@@ -73,7 +97,7 @@ export const deleteTodoList = async (id: number): Promise<boolean> => {
 
     // Remove entry in index file.
     const indexContent: TodoListMeta[] = await loadTodoListMeta();
-    const updatedIndex = indexContent.filter(item => item.id !== id);
+    const updatedIndex: TodoListMeta[] = indexContent.filter(item => item.id !== id);
     await FileSystem.writeAsStringAsync(INDEX_FILE, JSON.stringify(updatedIndex));
     return true;
   } catch (error) {
