@@ -17,22 +17,31 @@ export default function TodoListDetailScreen() {
   }, [parsedTodoList, navigation]);
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
-        { parsedTodoList ? (
-          <ListDetail todoList={parsedTodoList} />
-        ) : (
-          <Text style={styles.errorText}>Error: List not found.</Text>
-        )}
-      </View>
+    <SafeAreaView style={styles.safeAreaContainer}>
+      <KeyboardAvoidingView
+        style={styles.keyboardContainer}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
+      >
+        <View style={styles.container}>
+          { parsedTodoList ? (
+            <ListDetail todoList={parsedTodoList} />
+          ) : (
+            <Text style={styles.errorText}>Error: List not found.</Text>
+          )}
+        </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  safeArea: {
+  safeAreaContainer: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  keyboardContainer: {
+    flex: 1,
   },
   container: {
     flex: 1,
