@@ -37,9 +37,18 @@ export default function RootLayout() {
           name="(tabs)"
           options={{
             headerShown: false,
+            title: "My Lists",
           }}
         />
-        <Stack.Screen name="todoListDetail"/>
+        <Stack.Screen
+          name="todoListDetail"
+          options={{
+            headerTintColor: "#fff",
+            headerStyle: {
+              backgroundColor: "#25292e",
+            },
+          }}
+        />
       </Stack>
     </>
   );
