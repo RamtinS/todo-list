@@ -10,25 +10,40 @@ part of an assessment in the subject IDATT2506 - Application Development for Mob
 
 ## Setup and Run
 
-1. Install dependencies
+### Prerequisites
+
+* Node.js installed on device. 
+* Android Studio or Xcode installed.
+
+### Run the application.
+
+1. Open an Android or iOS emulator on your device. 
+
+2. Clone the project from GitHub into your device:
+
+   ```
+   git clone https://github.com/RamtinS/todo-list.git
+   ```
+
+3. Navigate to the project directory:
+
+   ```
+   cd todo_list
+   ```
+
+4. Install dependencies:
 
    ```bash
    npm install
    ```
 
-2. Start the app
+5. Run the app:
 
    ```bash
     npx expo start
    ```
 
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
+6. Follow the instructions in the terminal to open the application on the desired emulator.
 
 ## Test data
 
