@@ -28,7 +28,7 @@ part of an assessment in the subject IDATT2506 - Application Development for Mob
 3. Navigate to the project directory:
 
    ```
-   cd todo_list
+   cd todo-list
    ```
 
 4. Install dependencies:
